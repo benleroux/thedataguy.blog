@@ -1,12 +1,12 @@
 module.exports = {
   siteMetadata: {
-    title: `Raki Rahman`,
+    title: `The Data Guy`,
     description: `Big Data & AI`,
-    author: `Raki Rahman`,
+    author: `Benjamin Leroux`,
     siteUrl:
       process.env.DEV_ENV === 1
         ? `http://localhost:8000`
-        : `https://www.rakirahman.me`,
+        : `https://thedataguy.blog`,
     image: `/images/og-card.png`,
   },
   plugins: [
@@ -37,8 +37,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Raki Rahman`,
-        short_name: `Raki Rahman`,
+        name: `Benjamin Leroux`,
+        short_name: `Benjamin Leroux`,
         start_url: `/`,
         background_color: `#2d3748`,
         theme_color: `#81E6D9`,
@@ -52,8 +52,8 @@ module.exports = {
     {
       resolve: "gatsby-plugin-robots-txt",
       options: {
-        host: "https://www.rakirahman.me",
-        sitemap: "https://www.rakirahman.me/sitemap.xml",
+        host: "https://thedataguy.blog",
+        sitemap: "https://thedataguy.blog/sitemap.xml",
         policy: [{ userAgent: "*", allow: "/" }],
         env: {
           development: {
@@ -219,7 +219,7 @@ module.exports = {
               }
             `,
             output: "/rss.xml",
-            title: "Raki Rahman's Blog",
+            title: "Benjamin Leroux's Blog",
             // optional configuration to insert feed reference in pages:
             // if `string` is used, it will be used to create RegExp and then test if pathname of
             // current page satisfied this regular expression;

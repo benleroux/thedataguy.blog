@@ -14,9 +14,11 @@ const IndexPage = () => {
       <SEO />
       <div className="mt-12 flex flex-col-reverse lg:flex-row items-center lg:justify-between lg:space-x-6">
         <h1 className="mt-12 lg:mt-0 max-w-3xl text-3xl sm:text-4xl text-primary font-bold sm:text-left md:text-center lg:text-left">
-          Hi, I’m Raki.
-          <br className="mb-6 lg:hidden" /> I build Data & AI Solutions on
-          <span className="text-accent"> Azure</span>.
+          Benjamin Leroux
+          <br className="mb-6 lg:hidden"/><br></br>
+          <span className="text-accent"  STYLE="font-size:12.0pt">
+            Cloud Solution Architect | Big Data | Data Engineering
+          </span>
         </h1>
         <div className="relative">
           <Blob />

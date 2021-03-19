@@ -10,12 +10,12 @@ const Footer = _ => {
               className="text-xs tracking-wider self-center md:self-end"
               aria-label="Copyright"
             >
-              © {`${new Date().getFullYear()} `} Raki Rahman.
+              © {`${new Date().getFullYear()} `} Benjamin Leroux.
             </span>
             <div className="flex flex-row items-center space-x-4 justify-center md:justify-end">
               <span>
                 <a
-                  href="https://github.com/mdrakiburrahman"
+                  href="https://github.com/benleroux"
                   aria-label="Visit GitHub profile"
                   title="Visit GitHub profile"
                   target="_blank"
@@ -34,7 +34,7 @@ const Footer = _ => {
               </span>
               <span>
                 <a
-                  href="https://www.linkedin.com/in/mdrakiburrahman/"
+                  href="https://www.linkedin.com/in/benjaminleroux/"
                   aria-label="Visit LinkedIn profile"
                   title="Visit LinkedIn profile"
                   target="_blank"
@@ -53,7 +53,7 @@ const Footer = _ => {
               </span>
               <span>
                 <a
-                  href="https://www.rakirahman.me/rss.xml"
+                  href="https://thedataguy.blog/rss.xml"
                   aria-label="View RSS Feed"
                   title="View RSS Feed"
                   target="_blank"

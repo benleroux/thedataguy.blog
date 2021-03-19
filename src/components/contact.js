@@ -18,7 +18,7 @@ export const Contact = () => {
         <div className="mx-auto  pt-10 flex justify-center">
           <Button
             width="widest"
-            link="https://github.com/mdrakiburrahman/rakirahman.me/issues/new"
+            link="https://github.com/benleroux/thedataguy.blog/issues/new"
           >
             <span className=" text-2xl font-semibold text-on-accent">
               Say hello
