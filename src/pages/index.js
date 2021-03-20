@@ -2,9 +2,7 @@ import React from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import PostList from "../components/postList"
-import { Heading } from "../components/atoms"
-
-import { Blob } from "../components/atoms"
+//import { Heading } from "../components/atoms"
 import Contact from "../components/contact"
 import Image from "../components/image"
 
@@ -12,23 +10,30 @@ const IndexPage = () => {
   return (
     <Layout activePage="/">
       <SEO />
-      <div className="mt-12 flex flex-col-reverse lg:flex-row items-center lg:justify-between lg:space-x-6">
-        <h1 className="mt-12 lg:mt-0 max-w-3xl text-3xl sm:text-4xl text-primary font-bold sm:text-left md:text-center lg:text-left">
+      <div className="border-0 px-8 flex flex-col-reverse sg:flex-row mg:flex-row lg:flex-row xl:flex-row items-center justify-around lg:space-x-6">
+        <h1 className="border-0 mt-12 lg:mt-0 max-w-3xl text-3xl sm:text-3xl text-primary font-bold text-center">
           Benjamin Leroux
-          <br className="mb-6 lg:hidden"/><br></br>
-          <span className="text-accent"  STYLE="font-size:12.0pt">
+          <br></br>
+          <span className="text-accent" STYLE="font-size:12.0pt">
             Cloud Solution Architect | Big Data | Data Engineering
           </span>
         </h1>
-        <div className="relative">
-          <Blob />
-          <div className="absolute w-full h-full top-0 flex items-center justify-center">
-            <div className="h-32 w-32 md:h-40 md:w-40 lg:h-48 lg:w-48 rounded-full overflow-hidden">
-              <Image />
-            </div>
-          </div>
-        </div>
+        <div className="border-2 h-48 w-48 rounded-full overflow-hidden">
+          <Image />
+        </div>        
       </div>
+      <div className="border-0 mt-12 flex flex-col-reverse lg:flex-row items-center lg:justify-between lg:space-x-6">
+        <h1 className="border-0 lg:mt-0 max-w-2xl text-1xl sm:text-2xl text-primary sm:text-left md:text-left lg:text-left">
+          Working in the data space for over 25 years now, I live and breath data. Specializing in Azure data services with a hyper specialization in big data and analytics, I hope to bring my knowledge and expertise to accelerate your journey into the Azure data world.​
+        </h1>
+      </div>    
+      <div className="border-0 flex flex-row items-center lg:justify-between lg:space-x-6">
+        <h1 className="border-0 ml-12 lg:ml-40 max-w-2xl text-1xl sm:text-2xl text-primary text-left">
+          <span border-0 className="text-accent font-body">
+            Thanks, The Data Guy
+          </span>
+        </h1>
+      </div>  
       <PostList showHeading />
       <Contact />
     </Layout>

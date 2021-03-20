@@ -61,7 +61,7 @@ export const Paragraph = ({ children }) => {
 export const InlinePageLink = ({ to, children, title = "Link" }) => {
   return (
     <Link to={to} title={title}>
-      <a className="font-medium text-base text-accent hover:text-accent hover:underline">
+      <a href="#/" className="font-medium text-base text-accent hover:text-accent hover:underline">
         {children}
       </a>
     </Link>
@@ -185,7 +185,7 @@ export const BlobFooter = _ => {
   return (
     <div aria-hidden="true">
       <div className="blob-bg relative">
-        <svg
+      <svg
           className="blob-rotate h-64 text-fill-secondary fill-current"
           viewBox="0 0 715 693"
           xmlns="http://www.w3.org/2000/svg"

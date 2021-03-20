@@ -35,6 +35,9 @@ module.exports = {
           '"Segoe UI Symbol"',
           '"Noto Color Emoji"',
         ],
+        body: [
+          "Rock Salt"
+        ],
       },
       backgroundColor: {
         accent: "var(--color-bg-accent)",

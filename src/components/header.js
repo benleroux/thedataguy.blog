@@ -10,10 +10,11 @@ const Header = ({ activePage }) => (
       className="mt-auto h-full flex space-x-6 items-center justify-center md:justify-start text-sm"
       aria-label="Main Navigation">
       <Link to="/" aria-label="Website logo, go back to homepage.">
-        <LogoImage/>
+        <div className="h-16 w-16 md:h-16 md:w-16 lg:h-16 lg:w-16 object-contain ">
+          <LogoImage className />
+        </div>   
       </Link>
-      <span className="hidden sm:flex flex-grow items-center space-x-6">
-      <LogoImage/>
+      <span className="hidden sm:flex flex-grow items-center space-x-6">     
         <NavLink to="/" title="Blog" selected={activePage === "/"}>
           Blog
         </NavLink>

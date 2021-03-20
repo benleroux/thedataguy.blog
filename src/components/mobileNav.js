@@ -55,6 +55,7 @@ const MobileNav = () => {
             onClick={e => {
               setNavShow(!navShow)
             }}
+            aria-label=" "
           ></button>
           <nav className="right-0 h-screen mt-auto py-48 px-6 fixed flex flex-col items-end font-medium text-primary tracking-widest">
             <div className="flex-grow">
