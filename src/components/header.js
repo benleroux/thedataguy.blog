@@ -24,9 +24,9 @@ const Header = ({ activePage }) => (
       </span>
       <ThemeToggle className="hidden sm:block hover:text-accent transition duration-150" />
     </nav>
-
+    
     <div className="hidden sm:block">
-      <div className="-mt-120 sm:-mt-120 ml-4">
+      <div className="-mt-0 sm:-mt-0 ml-0">
         <BlobHeader />
       </div>
     </div>
