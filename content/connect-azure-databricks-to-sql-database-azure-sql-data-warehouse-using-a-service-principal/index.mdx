@@ -26,30 +26,30 @@ Authenticating with your user name is practical when doing analysis and pulling 
 
 ## Prerequisites
 
-This blog will concertrate on the the Databricks part and not the plumbing before hand as it's already well documented.
-
-But to help, you will need to perform the following actions:
-
-Create an AAD App registration
-
-You can follow this Microsoft [doc](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
-
-Create a secret for your app registration
-
-[This blogs](https://blogs.technet.microsoft.com/stefan_stranger/2018/06/06/connect-to-azure-sql-database-by-obtaining-a-token-from-azure-active-directory-aad/) covers the next 3 steps very well
-
-Create an AAD Group
-
-See above
-
-Add the App registration to the AAD group as a member
-
-  
-See above
-
-Add the AAD group to Azure SQL Active Directory Admin
-
-You can follow [this guide](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-aad-authentication-configure#provision-an-azure-active-directory-administrator-for-your-azure-sql-database-server) as well as the above
+<table class="wp-block-table is-style-stripes">
+   <tbody>
+      <tr>
+         <td>Create an AAD App registration</td>
+         <td>You can follow this Microsoft <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">doc</a></td>
+      </tr>
+      <tr>
+         <td>Create a secret for your app registration</td>
+         <td><a rel="noreferrer noopener" aria-label="This blogs (opens in a new tab)" href="https://blogs.technet.microsoft.com/stefan_stranger/2018/06/06/connect-to-azure-sql-database-by-obtaining-a-token-from-azure-active-directory-aad/" target="_blank">This blogs</a> covers the next 3 steps very well</td>
+      </tr>
+      <tr>
+         <td>Create an AAD Group</td>
+         <td>See above</td>
+      </tr>
+      <tr>
+         <td>Add the App registration to the AAD group as a member</td>
+         <td>See above</td>
+      </tr>
+      <tr>
+         <td>Add the AAD group to Azure SQL Active Directory Admin</td>
+         <td>You can follow <a rel="noreferrer noopener" aria-label="this guide (opens in a new tab)" href="https://docs.microsoft.com/en-us/azure/sql-database/sql-database-aad-authentication-configure#provision-an-azure-active-directory-administrator-for-your-azure-sql-database-server" target="_blank">this guide</a> as well as the above</td>
+      </tr>
+   </tbody>
+</table>
 
 <Callout>
   We're connecting the service principal as a server admin but it could be linked to a user with specific rights in the database using the "CREATE USER FROM EXTERNAL PROVIDER;" statement.
@@ -59,17 +59,17 @@ You can follow [this guide](https://docs.microsoft.com/en-us/azure/sql-database/
 
 In order to do the next part you will need a few keys:
 
-Tenant ID
+#### Tenant ID
 
 You can find this in your Azure Active Directory service in the Azure portal in the properties blade and directory id field.  
 ![](images/sql2.png)
 
-App registration Application (client) ID
+#### App registration Application (client) ID
 
 You can find this on the overview blade of the app regristration created earlier.  
 ![](images/sql1.png)  
 
-Secret key
+#### Secret key
 
 This was given to you when you initially created the secret. If you did not write it down, you can delete the key and create a new one.
 
@@ -83,9 +83,11 @@ Let's look at the building blocks first:
 
 You will need to add the following libraries to your cluster:
 
-> com.microsoft.azure:adal4j:1.6.4 found [here](https://mvnrepository.com/artifact/com.microsoft.azure/adal4j)
-> 
-> com.microsoft.azure:azure-sqldb-spark:1.0.2 found [here](https://mvnrepository.com/artifact/com.microsoft.azure/azure-sqldb-spark)
+<Callout>
+com.microsoft.azure:adal4j:1.6.4 found [here](https://mvnrepository.com/artifact/com.microsoft.azure/adal4j)
+
+com.microsoft.azure:azure-sqldb-spark:1.0.2 found [here](https://mvnrepository.com/artifact/com.microsoft.azure/azure-sqldb-spark)
+</Callout>
 
 ### Instantiate the ADAL AuthenticationContext object
 
@@ -110,27 +112,16 @@ You will need to add the following libraries to your cluster:
 
 **ClientCredential(String clientId, String clientSecret)** Constructor to create credential with client id and secret
 
-**acquireToken**
-
-  
-public [Future](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Future.html?is-external=true)<[AuthenticationResult](https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AuthenticationResult.html)\> acquireToken(  
-[String](http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true) resource,  
-[AsymmetricKeyCredential](https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AsymmetricKeyCredential.html) credential,  
-[AuthenticationCallback](https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AuthenticationCallback.html) callback)  
-throws [AuthenticationException](https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AuthenticationException.html)  
-  
-Acquires security token from the authority.  
-  
-**Parameters:**  
-resource - Identifier of the target resource that is the recipient of the requested token.  
-credential - object representing Private Key to use for token acquisition.  
-callback- optional callback object for non-blocking execution.  
-  
-**Returns:**  
-A [Future](http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Future.html?is-external=true) object representing the AuthenticationResult of the call. It contains Access Token and the Access Token's expiration time. Refresh Token property will be null for this overload.  
-  
-**Throws:**  
-[AuthenticationException](https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AuthenticationException.html) - [AuthenticationException](https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AuthenticationException.html)
+<table class="wp-block-table alignleft is-style-stripes">
+   <tbody>
+      <tr>
+         <td><strong>acquireToken</strong></td>
+      </tr>
+      <tr>
+         <td><br></br>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Future.html?is-external=true">Future</a>&lt;<a href="https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AuthenticationResult.html">AuthenticationResult</a>&gt;&nbsp;acquireToken(<br></br><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true">String</a>&nbsp;resource,<br></br><a href="https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AsymmetricKeyCredential.html">AsymmetricKeyCredential</a>&nbsp;credential,<br></br><a href="https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AuthenticationCallback.html">AuthenticationCallback</a>&nbsp;callback)<br></br>throws <a href="https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AuthenticationException.html">AuthenticationException</a><br></br><br></br>Acquires security token from the authority.<br></br><br></br><strong>Parameters:</strong><br></br>resource - Identifier of the target resource that is the recipient of the requested token.<br></br>credential - object representing Private Key to use for token acquisition.<br></br>callback- optional callback object for non-blocking execution.<br></br><br></br><strong>Returns:</strong><br></br>A&nbsp;<a rel="noreferrer noopener" aria-label="Future  (opens in a new tab)" href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Future.html?is-external=true" target="_blank">Future </a>object representing the AuthenticationResult of the call. It contains Access Token and the Access Token's expiration time. Refresh Token property will be null for this overload.<br></br><br></br><strong>Throws:</strong><br></br><a rel="noreferrer noopener" aria-label="AuthenticationException (opens in a new tab)" href="https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AuthenticationException.html" target="_blank">AuthenticationException</a> -&nbsp;<a rel="noreferrer noopener" aria-label="AuthenticationException  (opens in a new tab)" href="https://static.javadoc.io/com.microsoft.azure/adal4j/1.6.4/com/microsoft/aad/adal4j/AuthenticationException.html" target="_blank">AuthenticationException</a><br></br></td>
+      </tr>
+   </tbody>
+</table>
 
 ### Putting it together
 

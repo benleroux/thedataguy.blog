@@ -80,24 +80,25 @@ spark.conf.set( "fs.azure.account.key.**[STORAGE ACCOUNT NAME]**.blob.core.windo
 ### Specifying the layout of the files to process
 
 <Callout>
-Think about specifying a [filter](https://docs.microsoft.com/en-us/azure/event-grid/subscription-creation-schema#filter-object) to limit the file types you want to capture events for.\
+Think about specifying a [filter](https://docs.microsoft.com/en-us/azure/event-grid/subscription-creation-schema#filter-object) to limit the file types you want to capture events for.
 </Callout>
 
 In this example, I will process JSON deposited in the BLOB Storage Account. Doing so will require me to specify a schema. This can be defined using StructType.
 
 For example, the following JSON:
 
-```
+```` json
 {
   "Amounts": {
     "amount": "14131441179.6617",
     "currencyCode": "EU"
   }
 }
-```
+````
 
 Will be represented as the following schema:
 
+````Scala
 val schema =   
 StructType( List (  
       StructField("Amounts",  
@@ -107,6 +108,7 @@ StructType( List (
         ))  
      ))  
 )
+````
 
 ### Setup the Structured Streaming 
 
@@ -118,6 +120,7 @@ See this [**link**](https://docs.azuredatabricks.net/spark/latest/structured-str
 
 You can now execute the following Scala code to prep the stream:
 
+````Scala
 val inputStream = spark  
   .readStream.format("abs-aqs")  
   .option("fileFormat", "json")  
@@ -127,6 +130,7 @@ val inputStream = spark
   .option("connectionString", **[STORAGE ACCOUNT CONNECTION STRING]**)  
   .schema(schema)  
   .load()
+````
 
 <Callout>
 Remember, spark is lazy! It will not do anything until you execute an action; like display for example.
