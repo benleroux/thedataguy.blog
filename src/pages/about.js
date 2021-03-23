@@ -11,74 +11,58 @@ const About = _ => {
       <div className="container">
         <article className="prose">
           <h2>
-            Hi{" "}
-            <span role="img" aria-label="Wave">
-              👋🏼
-            </span>{" "}
-            - I'm Raki Rahman
+            Hey, I'm Benjamin
           </h2>
           <p>
             I'm a <strong>Data & AI</strong> Cloud Solutions Architect at{" "}
             <ExtLink link="https://www.microsoft.com/en-ca">
               <strong>Microsoft</strong>
             </ExtLink>{" "}
-            - currently based out of Toronto, Canada.
+            - currently based out of Montreal, Canada.
           </p>
           <p>
             {" "}
-            After graduating with Honours Distinction from University of
-            Toronto's rigorous{" "}
-            <ExtLink link="https://engsci.utoronto.ca/program/what-is-engsci/">
-              <strong>EngSci</strong>
-            </ExtLink>{" "}
-            program as an <strong>Aerospace Engineer</strong>, I've worked at
-            leading Technology Consulting firms in driving Azure Cloud
-            Transformations across some of the largest Enterprise Clients in
-            North America.
+            Specializing in the Azure cloud’s big data an analytics workloads with <b>25</b> years of 
+            experience in the technology sector and 5 years working at Microsoft. Working as as a Cloud 
+            Solution Architect, I’ve driven large customer initiatives like enterprise data lakes, 
+            big data analytics and large-scale data migrations on the Microsoft Data Platform, 
+            I’ve also helped clients guide overall technical and architectural design including 
+            specific implementation projects and/or pilots.
           </p>
           <h2>Why Data?</h2>
-          <p>I've been working with Computers for as long as I can remember.</p>
+          <p>Like I mentioned on my main page, I live an breath data.</p>
           <p>
-            Since I was 5 years old, I grew up building and fixing computers as
-            a hobby. As I learned to code, this hobby developed into a deep,
-            self-taught expertise of how computer hardware interacts with the
-            hypervisor layer to solve real-life problems. Coupled with the
-            practically infinite computing power of the Cloud for processing Big
-            Data, I realized the frontier of growth in this field is endless.
-            Applied correctly, we have the opportunity here to completely shape
-            the world for the better.
+            I hated my first Oracle course in school. So much so that I vowed at the time I would
+            never become a DBA or have anything to do with databases; I was going to be a "developer" 
+            <span role="img" aria-label="sheep">🤦‍♂️</span>. 
+            Fast forward a few years and SQL Server 6.5... I wrote my first stored procedure. Let's 
+            say, I was hooked. Branching to BI then architecture, I've never looked back.
           </p>
           <p>
-            Plus I get to build a pretty entertaining career out of it too{" "}
-            <span role="img" aria-label="Laugh">
-              😄
-            </span>
-            .
+            Data fuels organizations. So why not be at the center of it all???
           </p>
           <h2>Why make this blog?</h2>
           <p>
-            Nothing gives me more joy than taking a seemingly{" "}
-            <em>"difficult"</em> concept or problem and breaking it down to form
-            a simple, elegant solution.
+            On a day to day basis, I use Azure services, experience how our client use as well
+            and figure out why not share with others what I know and have learned.
           </p>
           <p>
-            I immensely enjoyed writing a few technical blog posts on LinkedIn,
-            before quickly realizing the platform is pretty limiting as far as
-            how creative you can get with presenting your content. I briefly
-            tried WordPress too, and found the engine to be way too clunky (and
-            expensive to host).
+            Simple way to pay it forward. Plus, in some way, I also enjoy it
+          </p>
+          <h2>Huge shout out to Raki!!!</h2>
+          <p>
+            I'd like to give a huge shout out to Raki Rahman for introducing me to Gatsby. Gave 
+            me a reason to  get off Wordpress and get some coding in.
           </p>
           <p>
-            To follow the pros: I decided to learn the{" "}
-            <ExtLink link="https://www.javascript.com/">Javascript</ExtLink>{" "}
-            framework - primarily{" "}
-            <ExtLink link="https://reactjs.org/">React</ExtLink>, and{" "}
-            <ExtLink link="https://graphql.org/">GraphQL</ExtLink> - and make
-            this blog as a fun side project.
+            Also, kudos for making his site available in GitHub as it allowed me to use it and get
+            started faster.
           </p>
           <p>
-            So basically, this blog is a channel for me to keep my coding skills
-            from getting rusty, while also giving back to the Data community!
+            Check out his site : {" "}
+            <ExtLink link="http://www.rakirahman.me">
+              <strong>rakirahman.me</strong>
+            </ExtLink>
           </p>
         </article>
       </div>

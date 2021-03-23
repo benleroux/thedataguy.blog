@@ -107,12 +107,7 @@ var plugins = [{
   plugin: __webpack_require__(/*! ./node_modules/gatsby-plugin-google-analytics/gatsby-ssr */ "./node_modules/gatsby-plugin-google-analytics/gatsby-ssr.js"),
   options: {
     "plugins": [],
-    "trackingId": "UA-180300326-1",
-    "head": false,
-    "anonymize": false,
-    "respectDNT": false,
-    "exclude": [],
-    "pageTransitionDelay": 0
+    "trackingId": "UA-180300326-1"
   }
 }, {
   plugin: __webpack_require__(/*! ./node_modules/gatsby-plugin-react-helmet/gatsby-ssr */ "./node_modules/gatsby-plugin-react-helmet/gatsby-ssr.js"),
@@ -130,11 +125,10 @@ var plugins = [{
     "theme_color": "#81E6D9",
     "display": "minimal-ui",
     "icon": "src/assets/images/logo-120x120.png",
+    "cache_busting_mode": "query",
+    "include_favicon": true,
     "legacy": true,
     "theme_color_in_head": true,
-    "cache_busting_mode": "query",
-    "crossOrigin": "anonymous",
-    "include_favicon": true,
     "cacheDigest": "9ef160a088695f71aa33887aa67377e2"
   }
 }, {
@@ -145,9 +139,7 @@ var plugins = [{
 }, {
   plugin: __webpack_require__(/*! ./node_modules/gatsby-plugin-sitemap/gatsby-ssr */ "./node_modules/gatsby-plugin-sitemap/gatsby-ssr.js"),
   options: {
-    "plugins": [],
-    "output": "/sitemap.xml",
-    "createLinkInHead": true
+    "plugins": []
   }
 }, {
   plugin: __webpack_require__(/*! ./node_modules/gatsby-plugin-mdx/gatsby-ssr */ "./node_modules/gatsby-plugin-mdx/gatsby-ssr.js"),
@@ -175,13 +167,7 @@ var plugins = [{
     }, {
       "resolve": "gatsby-remark-prismjs",
       "options": {}
-    }],
-    "defaultLayouts": {},
-    "lessBabel": false,
-    "remarkPlugins": [],
-    "rehypePlugins": [],
-    "mediaTypes": ["text/markdown", "text/x-markdown"],
-    "root": "/Users/ben/thedataguy.blog"
+    }]
   }
 }, {
   plugin: __webpack_require__(/*! ./node_modules/gatsby-plugin-feed-mdx/gatsby-ssr */ "./node_modules/gatsby-plugin-feed-mdx/gatsby-ssr.js"),
@@ -198,9 +184,7 @@ var plugins = [{
 }, {
   plugin: __webpack_require__(/*! ./node_modules/gatsby-remark-autolink-headers/gatsby-ssr */ "./node_modules/gatsby-remark-autolink-headers/gatsby-ssr.js"),
   options: {
-    "plugins": [],
-    "offsetY": 0,
-    "className": "anchor"
+    "plugins": []
   }
 }]; // During bootstrap, we write requires at top of this file which looks like:
 // var plugins = [
@@ -464,6 +448,24 @@ exports.wrapPageElement = true;
  */
 
 exports.wrapRootElement = true;
+
+/***/ }),
+
+/***/ "./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/e92f8988d65cf25c087d226e6c0ef06f.js":
+/*!********************************************************************************************!*\
+  !*** ./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/e92f8988d65cf25c087d226e6c0ef06f.js ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  React: react__WEBPACK_IMPORTED_MODULE_0__
+});
 
 /***/ }),
 
@@ -2104,7 +2106,7 @@ var isFunction = function isFunction(obj) {
   return typeof obj === 'function';
 };
 
-var MDXContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext({});
+var MDXContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext({});
 var withMDXComponents = function withMDXComponents(Component) {
   return function (props) {
     var allComponents = useMDXComponents(props.components);
@@ -3240,7 +3242,7 @@ exports.onRenderBody = function (_ref, pluginOptions) {
   var setHeadComponents = _ref.setHeadComponents,
       pathname = _ref.pathname;
 
-  var _defaultOptions$plugi = (0, _extends2.default)({}, _internals.defaultOptions, pluginOptions),
+  var _defaultOptions$plugi = (0, _extends2["default"])({}, _internals.defaultOptions, {}, pluginOptions),
       feeds = _defaultOptions$plugi.feeds;
 
   var links = feeds.filter(function (_ref2) {
@@ -3249,15 +3251,18 @@ exports.onRenderBody = function (_ref, pluginOptions) {
     return true;
   }).map(function (_ref3, i) {
     var output = _ref3.output,
-        title = _ref3.title,
-        link = _ref3.link;
-    var href = link || withPrefix(output.replace(/^\/?/, "/"));
-    return /*#__PURE__*/_react.default.createElement("link", {
+        title = _ref3.title;
+
+    if (output.charAt(0) !== "/") {
+      output = "/" + output;
+    }
+
+    return _react["default"].createElement("link", {
       key: "gatsby-plugin-feed-mdx-" + i,
       rel: "alternate",
       type: "application/rss+xml",
       title: title,
-      href: href
+      href: withPrefix(output)
     });
   });
   setHeadComponents(links);
@@ -3299,16 +3304,16 @@ var defaultOptions = {
   // Override if you want to manually specify the RSS "generator" tag.
   generator: "GatsbyJS",
   // Run a default query to gather some information about the site.
-  query: "\n  {\n    site {\n      siteMetadata {\n        title\n        description\n        siteUrl\n        site_url: siteUrl\n      }\n    }\n  }\n",
+  query: "\n    {\n      site {\n        siteMetadata {\n          title\n          description\n          siteUrl\n          site_url: siteUrl\n        }\n      }\n    }\n  ",
   // Setup an RSS object, merging on various feed-specific options.
   setup: function setup(_ref) {
     var siteMetadata = _ref.query.site.siteMetadata,
-        rest = (0, _objectWithoutPropertiesLoose2.default)(_ref, ["query"]);
-    return (0, _extends2.default)({}, siteMetadata, rest);
+        rest = (0, _objectWithoutPropertiesLoose2["default"])(_ref, ["query"]);
+    return (0, _extends2["default"])({}, siteMetadata, {}, rest);
   },
   // Create a default RSS feed. Others may be added by using the format below.
   feeds: [{
-    query: "\n    {\n      allMdx(\n        limit: 1000,\n        sort: {\n          order: DESC,\n          fields: [frontmatter___date]\n        }\n      ) {\n        edges {\n          node {\n            frontmatter {\n              title\n              date\n            }\n            fields {\n              slug\n            }\n            excerpt\n            html\n          }\n        }\n      }\n    }\n  ",
+    query: "\n      {\n        allMdx(\n          limit: 1000,\n          sort: {\n            order: DESC,\n            fields: [frontmatter___date]\n          }\n        ) {\n          edges {\n            node {\n              frontmatter {\n                title\n                date\n              }\n              fields {\n                slug\n              }\n              excerpt\n              html\n            }\n          }\n        }\n      }\n    ",
     // Where we will save the feed generated by this query.
     output: "rss.xml"
   }]
@@ -3342,13 +3347,11 @@ var knownOptions = {
     alwaysSendReferrer: "boolean",
     allowAnchor: "boolean",
     cookieName: "string",
-    cookieFlags: "string",
     cookieExpires: "number",
     storeGac: "boolean",
     legacyCookieDomain: "string",
     legacyHistoryImport: "boolean",
-    allowLinker: "boolean",
-    storage: "string"
+    allowLinker: "boolean"
   },
   general: {
     allowAdFeatures: "boolean",
@@ -3369,12 +3372,8 @@ var onRenderBody = function onRenderBody(_ref, pluginOptions) {
 
 
   setHeadComponents([/*#__PURE__*/_react.default.createElement("link", {
-    rel: "preconnect",
+    rel: "preconnect dns-prefetch",
     key: "preconnect-google-analytics",
-    href: "https://www.google-analytics.com"
-  }), /*#__PURE__*/_react.default.createElement("link", {
-    rel: "dns-prefetch",
-    key: "dns-prefetch-google-analytics",
     href: "https://www.google-analytics.com"
   })]);
   var excludeGAPaths = [];
@@ -3547,8 +3546,7 @@ exports.onRenderBody = function (_ref, _ref2) {
       insertFaviconLinkTag = _ref2.include_favicon,
       insertMetaTag = _ref2.theme_color_in_head,
       theme_color = _ref2.theme_color,
-      _ref2$crossOrigin = _ref2.crossOrigin,
-      crossOrigin = _ref2$crossOrigin === void 0 ? "anonymous" : _ref2$crossOrigin; // We use this to build a final array to pass as the argument to setHeadComponents at the end of onRenderBody.
+      crossOrigin = _ref2.crossOrigin; // We use this to build a final array to pass as the argument to setHeadComponents at the end of onRenderBody.
 
   var headComponents = [];
   var srcIconExists = !!icon;
@@ -3559,21 +3557,11 @@ exports.onRenderBody = function (_ref, _ref2) {
     if (insertFaviconLinkTag) {
       _common.favicons.forEach(function (favicon) {
         headComponents.push( /*#__PURE__*/React.createElement("link", {
-          key: "gatsby-plugin-manifest-icon-link-png",
+          key: "gatsby-plugin-manifest-icon-link",
           rel: "icon",
-          href: withPrefix((0, _common.addDigestToPath)(favicon.src, cacheDigest, cacheBusting)),
-          type: "image/png"
+          href: withPrefix((0, _common.addDigestToPath)(favicon.src, cacheDigest, cacheBusting))
         }));
       });
-
-      if (icon === null || icon === void 0 ? void 0 : icon.endsWith(".svg")) {
-        headComponents.push( /*#__PURE__*/React.createElement("link", {
-          key: "gatsby-plugin-manifest-icon-link-svg",
-          rel: "icon",
-          href: withPrefix((0, _common.addDigestToPath)("favicon.svg", cacheDigest, cacheBusting)),
-          type: "image/svg+xml"
-        }));
-      }
     }
   } // Add manifest link tag.
 
@@ -3581,7 +3569,7 @@ exports.onRenderBody = function (_ref, _ref2) {
   headComponents.push( /*#__PURE__*/React.createElement("link", {
     key: "gatsby-plugin-manifest-link",
     rel: "manifest",
-    href: (0, _gatsby.withPrefix)("/" + manifestFileName),
+    href: withPrefix("/" + manifestFileName),
     crossOrigin: crossOrigin
   })); // The user has an option to opt out of the theme_color meta tag being inserted into the head.
 
@@ -3718,11 +3706,13 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var scope_0 = __webpack_require__(/*! ./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/ec45bd750894de651f3e0d70e992632b.js */ "./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/ec45bd750894de651f3e0d70e992632b.js").default;
+var scope_0 = __webpack_require__(/*! ./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/e92f8988d65cf25c087d226e6c0ef06f.js */ "./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/e92f8988d65cf25c087d226e6c0ef06f.js").default;
 
-var scope_1 = __webpack_require__(/*! ./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/f2130fabbe881e1ea0e1b44095698a72.js */ "./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/f2130fabbe881e1ea0e1b44095698a72.js").default;
+var scope_1 = __webpack_require__(/*! ./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/ec45bd750894de651f3e0d70e992632b.js */ "./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/ec45bd750894de651f3e0d70e992632b.js").default;
 
-/* harmony default export */ __webpack_exports__["default"] = (Object.assign({}, scope_0, scope_1));
+var scope_2 = __webpack_require__(/*! ./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/f2130fabbe881e1ea0e1b44095698a72.js */ "./.cache/caches/gatsby-plugin-mdx/mdx-scopes-dir/f2130fabbe881e1ea0e1b44095698a72.js").default;
+
+/* harmony default export */ __webpack_exports__["default"] = (Object.assign({}, scope_0, scope_1, scope_2));
 
 /***/ }),
 
@@ -4024,7 +4014,7 @@ var _objectWithoutPropertiesLoose2 = _interopRequireDefault(__webpack_require__(
 
 var _fs = _interopRequireDefault(__webpack_require__(/*! fs */ "fs"));
 
-var _pify = _interopRequireDefault(__webpack_require__(/*! pify */ "./node_modules/gatsby-plugin-sitemap/node_modules/pify/index.js"));
+var _pify = _interopRequireDefault(__webpack_require__(/*! pify */ "./node_modules/pify/index.js"));
 
 var _minimatch = _interopRequireDefault(__webpack_require__(/*! minimatch */ "./node_modules/minimatch/minimatch.js"));
 
@@ -4142,104 +4132,6 @@ function getNodes(results) {
 
   throw new Error("[gatsby-plugin-sitemap]: Plugin is unsure how to handle the results of your query, you'll need to write custom page filter and serializer in your gatsby config");
 }
-
-/***/ }),
-
-/***/ "./node_modules/gatsby-plugin-sitemap/node_modules/pify/index.js":
-/*!***********************************************************************!*\
-  !*** ./node_modules/gatsby-plugin-sitemap/node_modules/pify/index.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-const processFn = (fn, opts) => function () {
-  const P = opts.promiseModule;
-  const args = new Array(arguments.length);
-
-  for (let i = 0; i < arguments.length; i++) {
-    args[i] = arguments[i];
-  }
-
-  return new P((resolve, reject) => {
-    if (opts.errorFirst) {
-      args.push(function (err, result) {
-        if (opts.multiArgs) {
-          const results = new Array(arguments.length - 1);
-
-          for (let i = 1; i < arguments.length; i++) {
-            results[i - 1] = arguments[i];
-          }
-
-          if (err) {
-            results.unshift(err);
-            reject(results);
-          } else {
-            resolve(results);
-          }
-        } else if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      });
-    } else {
-      args.push(function (result) {
-        if (opts.multiArgs) {
-          const results = new Array(arguments.length - 1);
-
-          for (let i = 0; i < arguments.length; i++) {
-            results[i] = arguments[i];
-          }
-
-          resolve(results);
-        } else {
-          resolve(result);
-        }
-      });
-    }
-
-    fn.apply(this, args);
-  });
-};
-
-module.exports = (obj, opts) => {
-  opts = Object.assign({
-    exclude: [/.+(Sync|Stream)$/],
-    errorFirst: true,
-    promiseModule: Promise
-  }, opts);
-
-  const filter = key => {
-    const match = pattern => typeof pattern === 'string' ? key === pattern : pattern.test(key);
-
-    return opts.include ? opts.include.some(match) : !opts.exclude.some(match);
-  };
-
-  let ret;
-
-  if (typeof obj === 'function') {
-    ret = function () {
-      if (opts.excludeMain) {
-        return obj.apply(this, arguments);
-      }
-
-      return processFn(obj, opts).apply(this, arguments);
-    };
-  } else {
-    ret = Object.create(Object.getPrototypeOf(obj));
-  }
-
-  for (const key in obj) {
-    // eslint-disable-line guard-for-in
-    const x = obj[key];
-    ret[key] = typeof x === 'function' && filter(key) ? processFn(x, opts) : x;
-  }
-
-  return ret;
-};
 
 /***/ }),
 
@@ -5854,6 +5746,102 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 /***/ }),
 
+/***/ "./node_modules/pify/index.js":
+/*!************************************!*\
+  !*** ./node_modules/pify/index.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+const processFn = (fn, opts) => function () {
+	const P = opts.promiseModule;
+	const args = new Array(arguments.length);
+
+	for (let i = 0; i < arguments.length; i++) {
+		args[i] = arguments[i];
+	}
+
+	return new P((resolve, reject) => {
+		if (opts.errorFirst) {
+			args.push(function (err, result) {
+				if (opts.multiArgs) {
+					const results = new Array(arguments.length - 1);
+
+					for (let i = 1; i < arguments.length; i++) {
+						results[i - 1] = arguments[i];
+					}
+
+					if (err) {
+						results.unshift(err);
+						reject(results);
+					} else {
+						resolve(results);
+					}
+				} else if (err) {
+					reject(err);
+				} else {
+					resolve(result);
+				}
+			});
+		} else {
+			args.push(function (result) {
+				if (opts.multiArgs) {
+					const results = new Array(arguments.length - 1);
+
+					for (let i = 0; i < arguments.length; i++) {
+						results[i] = arguments[i];
+					}
+
+					resolve(results);
+				} else {
+					resolve(result);
+				}
+			});
+		}
+
+		fn.apply(this, args);
+	});
+};
+
+module.exports = (obj, opts) => {
+	opts = Object.assign({
+		exclude: [/.+(Sync|Stream)$/],
+		errorFirst: true,
+		promiseModule: Promise
+	}, opts);
+
+	const filter = key => {
+		const match = pattern => typeof pattern === 'string' ? key === pattern : pattern.test(key);
+		return opts.include ? opts.include.some(match) : !opts.exclude.some(match);
+	};
+
+	let ret;
+	if (typeof obj === 'function') {
+		ret = function () {
+			if (opts.excludeMain) {
+				return obj.apply(this, arguments);
+			}
+
+			return processFn(obj, opts).apply(this, arguments);
+		};
+	} else {
+		ret = Object.create(Object.getPrototypeOf(obj));
+	}
+
+	for (const key in obj) { // eslint-disable-line guard-for-in
+		const x = obj[key];
+		ret[key] = typeof x === 'function' && filter(key) ? processFn(x, opts) : x;
+	}
+
+	return ret;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/prop-types/checkPropTypes.js":
 /*!***************************************************!*\
   !*** ./node_modules/prop-types/checkPropTypes.js ***!
@@ -6629,7 +6617,7 @@ module.exports = ReactPropTypesSecret;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.14.0
+/** @license React v16.13.1
  * react-dom.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -31199,7 +31187,7 @@ function injectIntoDevTools(devToolsConfig) {
     // Enables DevTools to append owner stacks to error messages in DEV mode.
     getCurrentFiber:  function () {
       return current;
-    }
+    } 
   }));
 }
 var IsSomeRendererActing$1 = ReactSharedInternals.IsSomeRendererActing;
@@ -31551,7 +31539,7 @@ implementation) {
   };
 }
 
-var ReactVersion = '16.14.0';
+var ReactVersion = '16.13.1';
 
 setAttemptUserBlockingHydration(attemptUserBlockingHydration$1);
 setAttemptContinuousHydration(attemptContinuousHydration$1);
@@ -33169,7 +33157,7 @@ if (false) {} else {
 /*!*********************************!*\
   !*** ./src/components/atoms.js ***!
   \*********************************/
-/*! exports provided: NavLink, BlogTitle, BlogTitleInfo, Heading, SubHeading, Paragraph, InlinePageLink, Strong, ExtLink, ProjectLink, Button, Callout, Blob, BlobHeader, BlobFooter */
+/*! exports provided: NavLink, BlogTitle, BlogTitleInfo, Heading, SubHeading, Paragraph, InlinePageLink, Strong, ExtLink, ProjectLink, Button, Callout, Blob, BlobHeader */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33188,7 +33176,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Callout", function() { return Callout; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Blob", function() { return Blob; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BlobHeader", function() { return BlobHeader; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BlobFooter", function() { return BlobFooter; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var gatsby__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! gatsby */ "./.cache/gatsby-browser-entry.js");
@@ -33347,38 +33334,68 @@ const Blob = _ => {
     className: "relative blob h-48 md:h-56 lg:h-64"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
     className: "blob-rotate-faster h-full text-fill-primary fill-current",
-    viewBox: "0 0 278 279",
+    viewBox: "20.7144 333.643 278 279",
     xmlns: "http://www.w3.org/2000/svg"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
     d: "M137.896 0.127761C167.59 -0.638578 198.383 1.62824 222.877 18.4301C247.738 35.4836 263.129 63.014 271.706 91.9151C280.118 120.258 280.513 150.661 270.364 178.43C260.457 205.538 239.342 225.92 216.353 243.372C192.903 261.174 167.336 278.631 137.896 278.994C108.28 279.358 81.0666 263.928 58.0226 245.322C35.8955 227.455 20.5343 203.415 11.0775 176.594C1.41508 149.191 -4.23875 119.749 3.91245 91.8587C12.2111 63.4638 31.6331 39.4483 56.0438 22.7357C79.9856 6.34414 108.89 0.876363 137.896 0.127761Z"
   }))));
 };
+/*
+export const BlobHeader3 = _ => {
+  return (
+    <div aria-hidden="true">
+      <div className="blob-bg absolute">
+        <svg
+          className="block m-auto  h-64 text-fill-secondary fill-current"
+          viewBox="-20.7144 333.643 2829 1197"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M359.408 0.499261C434.083 0.69572 509.059 15.4608 570.136 58.4268C631.828 101.825 675.247 166.543 697.772 238.528C720.119 309.946 720.46 387.141 695.015 457.515C670.121 526.365 618.875 581.064 558.794 622.901C499.694 664.055 431.329 687.499 359.408 691.212C284.339 695.087 205.553 688.115 144.481 644.291C83.2293 600.338 54.1113 526.936 30.6392 455.293C7.11277 383.484 -10.9409 307.559 10.4113 235.074C32.1072 161.421 84.1477 100.148 147.872 57.3159C209.988 15.5657 284.566 0.302364 359.408 0.499261Z" />
+        </svg>
+      </div>
+    </div>
+  )
+}
+*/
+
 const BlobHeader = _ => {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     "aria-hidden": "true"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "blob-bg absolute"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
-    className: "block m-auto blob-rotate h-64 text-fill-secondary fill-current",
-    viewBox: "0 0 715 693",
+    className: "block m-auto  h-64 fill-current text-yellow-600",
+    viewBox: "-530 -110 1715 693",
     xmlns: "http://www.w3.org/2000/svg"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
-    d: "M359.408 0.499261C434.083 0.69572 509.059 15.4608 570.136 58.4268C631.828 101.825 675.247 166.543 697.772 238.528C720.119 309.946 720.46 387.141 695.015 457.515C670.121 526.365 618.875 581.064 558.794 622.901C499.694 664.055 431.329 687.499 359.408 691.212C284.339 695.087 205.553 688.115 144.481 644.291C83.2293 600.338 54.1113 526.936 30.6392 455.293C7.11277 383.484 -10.9409 307.559 10.4113 235.074C32.1072 161.421 84.1477 100.148 147.872 57.3159C209.988 15.5657 284.566 0.302364 359.408 0.499261Z"
-  }))));
-};
-const BlobFooter = _ => {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    "aria-hidden": "true"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "blob-bg relative"
+    d: "M 11 11 V 140 H 500 V 11 H 11"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "blob-bg absolute"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
-    className: "blob-rotate h-64 text-fill-secondary fill-current",
-    viewBox: "0 0 715 693",
+    className: "block m-auto  h-64 text-fill-secondary fill-current",
+    viewBox: "-500 -20 1715 693",
     xmlns: "http://www.w3.org/2000/svg"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
-    d: "M359.408 0.499261C434.083 0.69572 509.059 15.4608 570.136 58.4268C631.828 101.825 675.247 166.543 697.772 238.528C720.119 309.946 720.46 387.141 695.015 457.515C670.121 526.365 618.875 581.064 558.794 622.901C499.694 664.055 431.329 687.499 359.408 691.212C284.339 695.087 205.553 688.115 144.481 644.291C83.2293 600.338 54.1113 526.936 30.6392 455.293C7.11277 383.484 -10.9409 307.559 10.4113 235.074C32.1072 161.421 84.1477 100.148 147.872 57.3159C209.988 15.5657 284.566 0.302364 359.408 0.499261Z"
+    d: "M 11 11 V 200 H 500 V 11 H 11"
   }))));
-};
+}; //M 6 4 A 1 1 0 0 0 6 200 H 320 A 1 1 0 0 0 320 4 H 6
+
+/*
+export const BlobFooter = _ => {
+  return (
+    <div aria-hidden="true">
+      <div className="blob-bg relative">
+      <svg
+          className="blob-rotate h-64 text-fill-secondary fill-current"
+          viewBox="0 0 715 693"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M359.408 0.499261C434.083 0.69572 509.059 15.4608 570.136 58.4268C631.828 101.825 675.247 166.543 697.772 238.528C720.119 309.946 720.46 387.141 695.015 457.515C670.121 526.365 618.875 581.064 558.794 622.901C499.694 664.055 431.329 687.499 359.408 691.212C284.339 695.087 205.553 688.115 144.481 644.291C83.2293 600.338 54.1113 526.936 30.6392 455.293C7.11277 383.484 -10.9409 307.559 10.4113 235.074C32.1072 161.421 84.1477 100.148 147.872 57.3159C209.988 15.5657 284.566 0.302364 359.408 0.499261Z" />
+        </svg>
+      </div>
+    </div>
+  )
+}*/
 
 /***/ }),
 

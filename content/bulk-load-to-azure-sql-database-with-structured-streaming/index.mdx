@@ -1,0 +1,72 @@
+---
+title: "Bulk load to Azure SQL Database with  Structured Streaming"
+date: "2020-04-09"
+published: true
+toc: true
+categories: 
+  - "azure-sql"
+  - "big-data"
+  - "databricks"
+seoImage: "og-bulk-load-to-azure-sql-database-with-structured-streaming.png"
+featuredImage: "./featured-image.png"
+---
+
+![](images/architecture1.png)
+
+As you may have noticed, my go to language is Scala when it comes to Azure Databricks and Spark. With that said, Scala has a great library to read and write data to Azure SQL Database. Along with some great options, the one that stands out the most is the ability to bulk load.
+
+See [here](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-spark-connector) for details on this library.
+
+I've been asked a few times about doing the same in Python; easier said than done. You basically have 2 options (that I've found): JDBC or PyODBC. PyODBC is great and it also allows you to execute stored procedures but it's a Python library and not PySpark. The difference? One is distributed and made to take advantage of Databricks clusters. As for JDBC, that works fairly well but struggled on how to push batches at a time in a Structured Streaming setting.
+
+### Structured Streaming? Why?
+
+Structured streaming is a nice feature in Azure Databricks that allows you to perform the computation incrementally and continuously updates the result as streaming data arrives. This method as becomes more popular than the traditional Spark streaming.
+
+Here's a good example for both Scala and Python: [https://docs.microsoft.com/en-us/azure/databricks/\_static/notebooks/structured-streaming-python.html](https://docs.microsoft.com/en-us/azure/databricks/_static/notebooks/structured-streaming-python.html)
+
+### So, What's this blog post about?
+
+Glad you asked :) I will be showing how to take a structured streaming and batch push to Azure SQL Database.
+
+![](images/SQL-Bulk-load-Blog-1.png)
+
+### Prerequisites
+
+In order to execute the code in this blog post, the following are required:
+
+Azure SQL Database:
+
+You can create a small singleton DB
+
+Server / Database properties:
+
+\- Server Name  
+  
+\- Database Name  
+  
+\- SQL User Name  
+  
+\- SQL User Password  
+
+An Azure Databricks workspace with cluster:
+
+Cluster can have 1 worker for this example
+
+* * *
+
+### My Notebook
+
+Below is the notebook I used in Databricks.
+
+[My notebook](https://thedataguy.blog/wp-content/uploads/2020/04/Stream-Bulk-to-SQLDB.html)
+
+* * *
+
+### Conclusion
+
+As this notebook run, you will notice your SQL DB table increase in batches of 100k records.
+
+You can play with the partition count to increase parallelism and / or the rows per second to increase the batch. Monitor as you increase as you may saturate the JVM processes for Spark or the Azure SQL Database throughput.
+
+Hope this helps!
