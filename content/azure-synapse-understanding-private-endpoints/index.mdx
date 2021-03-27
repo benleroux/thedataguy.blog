@@ -8,7 +8,7 @@ toc: true
 seoImage: "og-azure-synapse-understanding-private-endpoints.png"
 featuredImage: "./featured-image.png"
 ---
-
+ 
 import { Callout } from "../../src/components/atoms.js"
 import { ExtLink, InlinePageLink } from "../../src/components/atoms.js"
 
@@ -166,15 +166,51 @@ You will need to create a private endpoint for the following:
 
 |                         |                                                         |
 | ----------------------- | ------------------------------------------------------- |
-| Dedicated SQL endpoint  | Select the SQL sub resource during the creation.         |
+| Dedicated SQL endpoint  | Select the SQL sub resource during the creation.        |
 | Serverless SQL endpoint | Select the SqlOnDemand sub resource during the creation |
-| Development endpoint    | Select the DEV sub resource during the creation.         |
+| Development endpoint    | Select the DEV sub resource during the creation.        |
 
 ### Private Link Hub
 
+You might've noticed in the list of private endpoint, we only had 3 of them while your workspace has 4 of them.
+That's because the studio workspace web URL will need a Private Link Hub to setup the secured connection.
 
+Check out this document for instructions on how to set this up.
+
+[Connect to Azure Synapse Studio using Azure Private](https://docs.microsoft.com/en-us/azure/synapse-analytics/security/synapse-private-link-hubs)
 
 ## Time to put it all together!
 
+Now that we've covered [firewalls](#firewall), [managed private endpoint](#managed-private-endpoints), 
+[private endpoint connections](#private-endpoint-connections) and [private link hub](#private-link-hub), lets' take
+a look how it looks when you deploy a secured end to end Synapse workspace.
+
 ![Azure Synapse Detailed Diagram](images/azure-synapse-detailed-diagram.png)
+
+This architecture assumes the following:
+
+1. You have 2 storage accounts, one for the workspace file system (this is required by Synapse and setup during the 
+deployment) and the another to store any audits and logs.
+
+2. For each of the storage accounts, you've disabled access from all networks and enabled the firewall to block 
+internet traffic.
+
+Now let's break this diagram down.
+
+### Synapse workspace
+
+![Synapse Workspace](images/synapse-workspace.png)
+
+## Conclusion
+
+Hope this helps clarifying some of the complexities of deploying a secured Synapse workspace and that you understand
+the nuances of each private endpoints.
+
+The last piece of the puzzle that can cause issues would be authentication and access control. 
+
+I can't recommand strongly enough that you go through this documentation which outlines all the steps you need to take.
+
+[How to set up access control for your Synapse workspace](https://docs.microsoft.com/en-us/azure/synapse-analytics/security/how-to-set-up-access-control)
+
+Thanks!
 
