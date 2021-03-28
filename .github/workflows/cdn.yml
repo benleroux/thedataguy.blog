@@ -1,6 +1,9 @@
 name: Purge Azure CDN
 
-on: [push]
+on:
+  workflow_run:
+    workflows: ["Deploy Website to Azure Storage Account"]
+    types: [completed]
 
 jobs:
   build:
