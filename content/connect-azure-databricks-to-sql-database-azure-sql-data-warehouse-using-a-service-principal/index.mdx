@@ -1,14 +1,16 @@
 ---
-title: "Connect Azure Databricks to SQL Database & Azure SQL Data Warehouse using a Service Principal"
+title: "Connect Azure Databricks to SQL Database & Synapse using Service Principal"
 date: "2019-05-04"
 published: true
 toc: true
-categories: 
-  - "azure-sql"
-  - "databricks"
+desctiption: "Connect Azure Databricks to SQL Database & Synapse using Service Principal"
+tags: ["azure-sql", "databricks"]
 seoImage: "og-connect-azure-databricks-to-sql-database-azure-sql-data-warehouse-using-a-service-principal.png"
 featuredImage: "./featured-image.png"
 ---
+
+import { Callout } from "../../src/components/atoms.js"
+import { ExtLink, InlinePageLink } from "../../src/components/atoms.js"
 
 Azure has recently added the ability to authenticate to Azure SQL Database and Azure SQL Data Warehouse using Azure Active Directory. This allows you to centrally manage identity to your database.
 
@@ -84,9 +86,11 @@ Let's look at the building blocks first:
 You will need to add the following libraries to your cluster:
 
 <Callout>
+
 com.microsoft.azure:adal4j:1.6.4 found [here](https://mvnrepository.com/artifact/com.microsoft.azure/adal4j)
 
 com.microsoft.azure:azure-sqldb-spark:1.0.2 found [here](https://mvnrepository.com/artifact/com.microsoft.azure/azure-sqldb-spark)
+
 </Callout>
 
 ### Instantiate the ADAL AuthenticationContext object

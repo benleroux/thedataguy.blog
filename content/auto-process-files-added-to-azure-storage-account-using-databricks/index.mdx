@@ -3,23 +3,20 @@ title: "Auto Process files added to Azure Storage Account using Databricks"
 date: "2018-12-05"
 published: true
 toc: true
-categories: 
-  - "big-data"
-  - "databricks"
-tags: 
-  - "azure"
-  - "blob"
-  - "databricks"
-  - "streaming"
+categories: ["big-data", "databricks"]
+tags: ["azure", "blob", "databricks", "streaming"]
 seoImage: "og-auto-process-files-added-to-azure-storage-account-using-databricks.png"
 featuredImage: "./featured-image.png"
 ---
+
+import { Callout } from "../../src/components/atoms.js"
+import { ExtLink, InlinePageLink } from "../../src/components/atoms.js"
 
 Have you ever wanted to process in near real time new files added to your Azure Storage account (BLOB)? Have you tried using Azure EventHub but files are too large to make this a practical solution? 
 
 Let me present you to ABS-AQS file source...
 
-![](images/event-grid-functional-model-1024x577.png)
+![Event Grid](images/event-grid-functional-model-1024x577.png)
 
 Azure Storage Topics using Event Grid 
 
@@ -44,7 +41,6 @@ I recommend unchecking the "Subscribe to all event types". This will at best hig
 
 - ![](images/EventGridSub2.png)
     
-
 <Callout>
 You can also filter the deleted events in Databricks but doing it here to simplify the processing
 </Callout>

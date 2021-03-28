@@ -7,6 +7,7 @@ description: Ever tried setup Azure Synapse Analytics and wonder what Managed vN
 toc: true
 seoImage: "og-azure-synapse-understanding-private-endpoints.png"
 featuredImage: "./featured-image.png"
+canonical: "https://www.thedataguy.blog/azure-synapse-understanding-private-endpoints/#time-to-put-it-all-together"
 ---
  
 import { Callout } from "../../src/components/atoms.js"
@@ -199,7 +200,67 @@ Now let's break this diagram down.
 
 ### Synapse workspace
 
-![Synapse Workspace](images/synapse-workspace.png)
+![Synapse Workspace architecture](images/synapse-workspace.png)
+
+1. The virtual network created as part of the managed vnet workspace deployment. This 
+vNet is managed by Microsoft and cannot be seen in the Azure portal's resource list. 
+
+2. It contains the compute for the self-hosted integration runtime and the compute for 
+the Synapse Dataflow.
+
+3. Any spark pools create will create virtual machines behind the scenes. These will also
+be hosted inside the managed virtual network (vNet).
+
+4. The workspace studio UI is actually a web app. For clarity purpose, I've included this
+as part of the Synapse Worskspace perimeter but it actually resides outside. The  following
+diagram shows this:
+
+![Actual Synapse Workspace architecture](images/synapse-workspace-actual.png)
+
+<Callout>
+  💡 Note, the web app for the UI will not be visible and is managed by Microsoft
+</Callout>
+
+5. The Serverless SQL pool  serverless, will not be physically deployed in the 
+vNet but will will communicate back and forth via private endpoints. 
+
+6. Same as the Serverless SQL pools, it will not be physically deployed in the 
+vNet but will will communicate back and forth via private endpoints. 
+
+<Callout>
+  💡 Remember the 2 managed private endpoints created when you deployed your new Synpase
+  workspace? This is why they're created.
+</Callout>
+
+### Storage Accounts and Synapse
+
+![Storage Accounts Private Endpoints](images/storage-account-pe.png)
+
+1. When you create a storage account that limits access to certain vNets, endpoints
+are needed to allow the connection and authentication
+
+3. Similar to how Synapse needs private endpoints to communicate with the 
+storage account, any external systesm or people that need to read or write
+to the storage account will require a [private endpoint](#private-endpoint-connections).
+
+3. Every storage accounts that you connect to your Synapse workspace via linked services will
+need a [managed prive endpoint](#managed-private-endpoints) like we mentioned previously.
+
+4. Optional: You can use another storage account to store any logs or audits.
+
+<Callout>
+  💡 Note, logs and audits cannot use storage accounts with hierarchical namespace
+  enabled. Hence the reason why we have 2 storage account in the diagram.
+</Callout>
+
+### Private endpoints in customer owned vNet
+
+As we mentioned previously on the private endpoints for the storage accounts in the
+customer's vNet, the same needs to be done for the 3 Synapse endpoints:
+
+1. Dedicated SQL Pool
+2. Serverless SQL Pool
+3. Dev
 
 ## Conclusion
 

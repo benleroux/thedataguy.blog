@@ -3,12 +3,14 @@ title: "Running an Azure Databricks notebook in a CI/CD release stage"
 date: "2019-04-23"
 published: true
 toc: true
-categories: 
-  - "big-data"
-  - "databricks"
+description: "Running an Azure Databricks notebook in a CI/CD release stage"
+tags: ["big-data", "databricks"]
 seoImage: "og-running-an-azure-databricks-notebook-in-a-ci-cd-release-stage.png"
 featuredImage: "./featured-image.png"
 ---
+
+import { Callout } from "../../src/components/atoms.js"
+import { ExtLink, InlinePageLink } from "../../src/components/atoms.js"
 
 ![](images/UT-0-1024x418.png)
 
@@ -42,7 +44,7 @@ https://eastus2.azuredatabricks.net/api/2.0/jobs/runs/submit\
 From Databricks documentation, a run-submit call submits a one-time run. This endpoint doesn’t require a Databricks job to be created. You can directly submit your workload. Runs submitted via this endpoint don’t display in the UI. Once the run is submitted, use the jobs/runs/get API to check the run state.
 
 <Callout>
-We suggest running jobs on new clusters for greater reliability.\
+We suggest running jobs on new clusters for greater reliability.
 </Callout>
 
 
@@ -53,7 +55,7 @@ We suggest running jobs on new clusters for greater reliability.\
 From Databricks documentation, a runs-get call retrieves the metadata of a run.
 
 <Callout>
-You use this API call to get the status of a running job. This is the mechanism we'll use to poll our submit call\
+You use this API call to get the status of a running job. This is the mechanism we'll use to poll our submit call
 </Callout>
 
 
@@ -103,7 +105,7 @@ $urlRunsGet = "https://**eastus2**.azuredatabricks.net/api/2.0/jobs/runs/get"
 As I mentioned above, submitting a new job to run will be done in asynchronous matter. This means you will simply get a run id in return with no idea if the job ran successfully or not, hence the need to call 2 APIs; submit and get. Each API requires an endpoint to which is what I set here.
 
 <Callout>
-Note that eastus2 is used for the region. Make sure to replace with the region your Databricks workspace is deplpyed in.\
+Note that eastus2 is used for the region. Make sure to replace with the region your Databricks workspace is deplpyed in.
 </Callout>
 
 #### Preparing the runs-submit POST body
@@ -152,7 +154,10 @@ DO {
 
 After submitting the run you can capture the run id which will be required to get the run status. The run id needs to be appended to the polling get method API call and then can be called in a while loop. This will run until it either fails or succeeds; this can be determined by the state.life\_cycle\_state property.
 
-> You can get my PowerShell Script from [my GitHub repository](https://github.com/benleroux/DatabricksDevOpsRun/blob/master/databricks-submit-job.ps1). Note, it's a work in progress as it doesn't report back the proper error to DevOps on failure. But hey, it's a start!
+You can get my PowerShell Script from [my GitHub repository](https://github.com/benleroux/DatabricksDevOpsRun/blob/master/databricks-submit-job.ps1). 
+<Callout>  
+  Note, it's a work in progress as it doesn't report back the proper error to DevOps on failure. But hey, it's a start!
+</Callout>
 
 ## Executing in DevOps
 
@@ -179,7 +184,7 @@ In order to configure the KeyVault task, you will need to select your Azure subs
 KeyVault task should look like this
 
 <Callout>
-Note, when authenticating DevOps to the KeyVault, a service principal is created and added to the KeyVault IAM RBAC. This same user needs to be added to the the KeyVault security policy and given at least LIST and GET rights for secret. If not done, you will get an error while running this task.\
+Note, when authenticating DevOps to the KeyVault, a service principal is created and added to the KeyVault IAM RBAC. This same user needs to be added to the the KeyVault security policy and given at least LIST and GET rights for secret. If not done, you will get an error while running this task.
 </Callout>
 
 
