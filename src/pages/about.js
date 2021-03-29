@@ -60,8 +60,8 @@ const About = _ => {
           </p>
           <p>
             Check out his site : {" "}
-            <ExtLink link="http://www.rakirahman.me">
-              <strong>rakirahman.me</strong>
+            <ExtLink link="http://www.thedataguy.blog">
+              <strong>thedataguy.blog</strong>
             </ExtLink>
           </p>
         </article>

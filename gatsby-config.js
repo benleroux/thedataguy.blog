@@ -6,7 +6,7 @@ module.exports = {
     siteUrl:
       process.env.DEV_ENV === 1
         ? `http://localhost:8000`
-        : `https://thedataguy.blog`,
+        : `https://www.thedataguy.blog`,
     image: `/images/og-card.png`,
   },
   plugins: [
@@ -52,8 +52,8 @@ module.exports = {
     {
       resolve: "gatsby-plugin-robots-txt",
       options: {
-        host: "https://thedataguy.blog",
-        sitemap: "https://thedataguy.blog/sitemap.xml",
+        host: "https://www.thedataguy.blog",
+        sitemap: "https://www.thedataguy.blog/sitemap.xml",
         policy: [{ userAgent: "*", allow: "/" }],
         env: {
           development: {
@@ -230,5 +230,11 @@ module.exports = {
       },
     },
     "gatsby-remark-autolink-headers",
+    {
+      resolve: `gatsby-plugin-canonical-urls`,
+      options: {
+        siteUrl: `https://www.thedataguy.blog`,
+      },
+    },
   ],
 }

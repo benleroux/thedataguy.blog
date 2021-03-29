@@ -1,10 +1,10 @@
 ---
-title: "Connect Azure Databricks to SQL Database & Synapse using Service Principal"
-date: "2019-05-04"
+title: Connect Azure Databricks to Synapse using Service Principal
+date: 2019-05-04
 published: true
-toc: true
-desctiption: "Connect Azure Databricks to SQL Database & Synapse using Service Principal"
 tags: ["azure-sql", "databricks"]
+description: Connect Azure Databricks to SQL Database & Synapse using Service Principal
+toc: true
 seoImage: "og-connect-azure-databricks-to-sql-database-azure-sql-data-warehouse-using-a-service-principal.png"
 featuredImage: "./featured-image.png"
 ---
@@ -12,13 +12,13 @@ featuredImage: "./featured-image.png"
 import { Callout } from "../../src/components/atoms.js"
 import { ExtLink, InlinePageLink } from "../../src/components/atoms.js"
 
-Azure has recently added the ability to authenticate to Azure SQL Database and Azure SQL Data Warehouse using Azure Active Directory. This allows you to centrally manage identity to your database.
+Azure has recently added the ability to authenticate to Azure SQL Database and Azure Synapse using Azure Active Directory. This allows you to centrally manage identity to your database.
 
 ![](images/sql3-1.png)
 
 ## Azure Active Directory (AAD) authentication
 
-As per Microsoft documentation, [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) authentication is a mechanism of connecting to Microsoft Azure SQL Data Warehouse and Azure SQL Database by using identities in Azure Active Directory (Azure AD). With Azure Active Directory authentication, you can centrally manage the identities of database users and other Microsoft services in one central location. Central ID management provides a single place to manage SQL Data Warehouse users and simplifies permission management.
+As per Microsoft documentation, [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis) authentication is a mechanism of connecting to Microsoft Azure Synapse and Azure SQL Database by using identities in Azure Active Directory (Azure AD). With Azure Active Directory authentication, you can centrally manage the identities of database users and other Microsoft services in one central location. Central ID management provides a single place to manage Synapse users and simplifies permission management.
 
 See [here](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-aad-authentication) for a great document explaining the details of using Azure Active Directory Authentication for authentication with SQL
 

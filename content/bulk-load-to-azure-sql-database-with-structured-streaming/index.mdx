@@ -1,13 +1,14 @@
 ---
-title: "Bulk load to Azure SQL Database with  Structured Streaming"
-date: "2020-04-09"
+title: Bulk load to Azure SQL Database with  Structured Streaming
+date: 2020-04-09
 published: true
-toc: true
-desciption: "Bulk load to Azure SQL Database with  Structured Streaming"
 tags: ["azure-sql", "big-data", "databricks"]
+description: Bulk load to Azure SQL Database with  Structured Streaming
+toc: true
 seoImage: "og-bulk-load-to-azure-sql-database-with-structured-streaming.png"
 featuredImage: "./featured-image.png"
 ---
+
 import { Callout } from "../../src/components/atoms.js"
 import { ExtLink, InlinePageLink } from "../../src/components/atoms.js"
 
@@ -19,19 +20,19 @@ See [here](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-spar
 
 I've been asked a few times about doing the same in Python; easier said than done. You basically have 2 options (that I've found): JDBC or PyODBC. PyODBC is great and it also allows you to execute stored procedures but it's a Python library and not PySpark. The difference? One is distributed and made to take advantage of Databricks clusters. As for JDBC, that works fairly well but struggled on how to push batches at a time in a Structured Streaming setting.
 
-### Structured Streaming? Why?
+## Structured Streaming? Why?
 
 Structured streaming is a nice feature in Azure Databricks that allows you to perform the computation incrementally and continuously updates the result as streaming data arrives. This method as becomes more popular than the traditional Spark streaming.
 
 Here's a good example for both Scala and Python: [https://docs.microsoft.com/en-us/azure/databricks/\_static/notebooks/structured-streaming-python.html](https://docs.microsoft.com/en-us/azure/databricks/_static/notebooks/structured-streaming-python.html)
 
-### So, What's this blog post about?
+## So, What's this blog post about?
 
 Glad you asked :) I will be showing how to take a structured streaming and batch push to Azure SQL Database.
 
 ![](images/SQL-Bulk-load-Blog-1.png)
 
-### Prerequisites
+## Prerequisites
 
 <table>
    <tbody>
@@ -50,7 +51,7 @@ Glad you asked :) I will be showing how to take a structured streaming and batch
    </tbody>
 </table>
 
-### My Notebook
+## My Notebook
 
 Below is the notebook I used in Databricks.
 
@@ -58,7 +59,7 @@ Below is the notebook I used in Databricks.
 
 <iframe src="https://thedataguy.blob.core.windows.net/public/stream-bulk-to-sqldb-databricks.html" width="100%" height="2960" frameborder="0"></iframe>
 
-### Conclusion
+## Conclusion
 
 As this notebook run, you will notice your SQL DB table increase in batches of 100k records.
 

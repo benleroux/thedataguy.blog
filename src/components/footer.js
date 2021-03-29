@@ -53,7 +53,7 @@ const Footer = _ => {
               </span>
               <span>
                 <a
-                  href="https://thedataguy.blog/rss.xml"
+                  href="https://www.thedataguy.blog/rss.xml"
                   aria-label="View RSS Feed"
                   title="View RSS Feed"
                   target="_blank"
