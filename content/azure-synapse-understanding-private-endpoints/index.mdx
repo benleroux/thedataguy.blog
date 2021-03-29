@@ -2,7 +2,7 @@
 title: Understanding Azure Synapse Private Endpoints
 date: 2021-03-22
 published: false
-tags: ["Azure", "synapse", "vnet", "prive endpoint"]
+tags: ["Azure", "synapse", "vnet", "private endpoint"]
 description: Ever tried setup Azure Synapse Analytics and wonder what Managed vNets and private endpoints? Let’s demystify this...
 toc: true
 seoImage: "og-azure-synapse-understanding-private-endpoints.png"
@@ -24,7 +24,7 @@ up is: does my data flow through the internet?
 In comes private endpoints, virtual networks, private and public IPs. 🤦‍♂️ Things 
 start getting complex...
 
-So lets try to make sense of all this.
+So let’s try to make sense of all this.
 
 <Callout>
   💡 Note, I will not be doing a deep dive into networking as there are people 
@@ -53,7 +53,7 @@ allow non-threatening traffic in and to keep dangerous traffic out."_
 
 In the context of Azure Synapse, it will allow you to grant or deny access to 
 your Synapse workspace based on IP addressed. This can be effectively used to 
-bloc internet traffic to your workspace.
+block internet traffic to your workspace.
 
 When creating your workspace, you have the option to allow **ALL** IP address through.
 
@@ -114,6 +114,8 @@ In short, you can use a private IP to connect to a public service... Well, kind 
 
 Every workspace comes with a few endpoints: 
 
+![Synapse workspace endpoints](images/synapse-workspace-endpoint.png)
+
 |                         |                                                                                                         |
 | ----------------------- | ------------------------------------------------------------------------------------------------------- |
 | Dedicated SQL endpoint  | Used to connect to the _**Dedicated**_ SQL Pool from external applications like Power BI, SSMS          |
@@ -122,11 +124,15 @@ Every workspace comes with a few endpoints:
 | workspace web URL       | Used to connect to the Synapse Studio web UI                                                            |
 
 If we take the dedicated SQL endpoint for example, we add private endpoint, what's 
-basically happening is when you connect to it, your requests goes 
+basically happening is when you connect to it, your request goes 
 through a **DNS** (**D**omain **N**ame **S**ervice translates domain names to IP addresses 
 so browsers can load Internet resources) redirection to a private DNS.
 
-If you do a tracerout to the SQL endpoint, you can see it routes to the private endpoint:
+If you do a nslookup to the SQL endpoint, you can see it routes to the private endpoint:
+
+```bash
+nslookup synapseblog-ws.sql.azuresynapse.net
+```
 
 ![Traceroute Output](images/traceroute-output.png)
 
@@ -156,7 +162,9 @@ see how: [How to create a managed private endpoint](https://docs.microsoft.com/e
 ### Private Endpoint Connections
 
 Now that we've covered managed private endpoints, you're probably asking yourself why you have a private endpoint
-connections blade in the Azure portal for your Synapse workspace.
+connection blade in the Azure portal for your Synapse workspace.
+
+![Private Endpoint Blade in Portal](images/portal-private-endpoint.png)
 
 Where managed private endpoints allows the workspace to connect to other PaaS services outside of its managed virtual
 network, private endpoint connections allow for everyone and everything to connect to Synapse endpoints using a private
@@ -182,15 +190,14 @@ Check out this document for instructions on how to set this up.
 ## Time to put it all together!
 
 Now that we've covered [firewalls](#firewall), [managed private endpoint](#managed-private-endpoints), 
-[private endpoint connections](#private-endpoint-connections) and [private link hub](#private-link-hub), lets' take
+[private endpoint connections](#private-endpoint-connections) and [private link hub](#private-link-hub), let’s take
 a look how it looks when you deploy a secured end to end Synapse workspace.
 
 ![Azure Synapse Detailed Diagram](images/azure-synapse-detailed-diagram.png)
 
 This architecture assumes the following:
 
-1. You have 2 storage accounts, one for the workspace file system (this is required by Synapse and setup during the 
-deployment) and the another to store any audits and logs.
+1. You have two storage accounts, one for the workspace file system (this is required by Synapse deployment), the another, to store any audits and logs.
 
 2. For each of the storage accounts, you've disabled access from all networks and enabled the firewall to block 
 internet traffic.
@@ -201,7 +208,7 @@ Now let's break this diagram down.
 
 ![Synapse Workspace architecture](images/synapse-workspace.png)
 
-1. The virtual network created as part of the managed vnet workspace deployment. This 
+1. The virtual network created as part of the managed vNet workspace deployment. This 
 vNet is managed by Microsoft and cannot be seen in the Azure portal's resource list. 
 
 2. It contains the compute for the self-hosted integration runtime and the compute for 
@@ -211,24 +218,21 @@ the Synapse Dataflow.
 be hosted inside the managed virtual network (vNet).
 
 4. The workspace studio UI is actually a web app. For clarity purpose, I've included this
-as part of the Synapse Worskspace perimeter but it actually resides outside. The  following
+as part of the Synapse workspace perimeter but it actually resides outside. The  following
 diagram shows this:
-
 ![Actual Synapse Workspace architecture](images/synapse-workspace-actual.png)
-
 <Callout>
   💡 Note, the web app for the UI will not be visible and is managed by Microsoft
 </Callout>
-
-5. The Serverless SQL pool  serverless, will not be physically deployed in the 
-vNet but will will communicate back and forth via private endpoints. 
+5. The Serverless SQL pool will not be physically deployed in the 
+vNet but will communicate back and forth via private endpoints. 
 
 6. Same as the Serverless SQL pools, it will not be physically deployed in the 
-vNet but will will communicate back and forth via private endpoints. 
+vNet but will communicate back and forth via private endpoints. 
 
 <Callout>
-  💡 Remember the 2 managed private endpoints created when you deployed your new Synpase
-  workspace? This is why they're created.
+  💡 Remember the two managed private endpoints created when you deployed your new Synapse
+workspace? This is why they're created.
 </Callout>
 
 ### Storage Accounts and Synapse
@@ -236,39 +240,41 @@ vNet but will will communicate back and forth via private endpoints.
 ![Storage Accounts Private Endpoints](images/storage-account-pe.png)
 
 1. When you create a storage account that limits access to certain vNets, endpoints
-are needed to allow the connection and authentication
+are needed to allow the connection and authentication.
 
 3. Similar to how Synapse needs private endpoints to communicate with the 
-storage account, any external systesm or people that need to read or write
+storage account, any external systems or people that need to read or write
 to the storage account will require a [private endpoint](#private-endpoint-connections).
 
 3. Every storage accounts that you connect to your Synapse workspace via linked services will
-need a [managed prive endpoint](#managed-private-endpoints) like we mentioned previously.
+need a [managed private endpoint](#managed-private-endpoints) like we mentioned previously.
 
 4. Optional: You can use another storage account to store any logs or audits.
 
 <Callout>
   💡 Note, logs and audits cannot use storage accounts with hierarchical namespace
-  enabled. Hence the reason why we have 2 storage account in the diagram.
+  enabled. Hence the reason why we have 2 storage accounts in the diagram.
 </Callout>
 
-### Private endpoints in customer owned vNet
+### Private endpoints in customer-owned vNet
 
-As we mentioned previously on the private endpoints for the storage accounts in the
-customer's vNet, the same needs to be done for the 3 Synapse endpoints:
+Like I mentioned previously for the storage accounts, private endpoints need to be
+created in the customer's vNet for the following:
 
 1. Dedicated SQL Pool
 2. Serverless SQL Pool
 3. Dev
 
+![Private Endpoints created in the portal](images/portal-created-endpoints.png)
+
 ## Conclusion
 
 Hope this helps clarifying some of the complexities of deploying a secured Synapse workspace and that you understand
-the nuances of each private endpoints.
+the nuances of each private endpoint.
 
 The last piece of the puzzle that can cause issues would be authentication and access control. 
 
-I can't recommand strongly enough that you go through this documentation which outlines all the steps you need to take.
+I can't recommend strongly enough that you go through this documentation which outlines all the steps you need to take.
 
 [How to set up access control for your Synapse workspace](https://docs.microsoft.com/en-us/azure/synapse-analytics/security/how-to-set-up-access-control)
 
