@@ -46,14 +46,14 @@ This topic can be broken down in a few categories:
 
 ## Firewall
 
-Google defines firewall as _"... a security device that monitors 
+~~Google~~ Bing defines firewall as _"... a security device that monitors 
 and filters incoming and outgoing network traffic based on an organization's 
 previously established security policies. ... A firewall's main purpose is to 
 allow non-threatening traffic in and to keep dangerous traffic out."_
 
 In the context of Azure Synapse, it will allow you to grant or deny access to 
 your Synapse workspace based on IP addressed. This can be effectively used to 
-block internet traffic to your workspace.
+block  traffic to your workspace via the internet.
 
 When creating your workspace, you have the option to allow **ALL** IP address through.
 
@@ -98,7 +98,7 @@ we're tackling next, is that you're now protected against data exfiltration.
 </Callout>
 
 In addition to enabling the managed virtual network option, you can also specify
-which Azure AD tenant can connect to your workspace endpoints .
+which Azure AD tenant can connect to your workspace endpoints.
 
 ![Specify AD Tenant](images/data-exfiltration.png)
 
@@ -110,9 +110,10 @@ Microsoft defines [Private Endpoints](https://docs.microsoft.com/en-us/azure/pri
 interface that connects you privately and securely to a service powered by Azure Private Link. Private Endpoint uses a private IP address from your VNet, 
 effectively bringing the service into your VNet."_
 
-In short, you can use a private IP to connect to a public service... Well, kind of. 
+In short, you can use a private IP to connect to a public service... Well, kind of as you still need to
+use a DNS, but more on that later.
 
-Every workspace comes with a few endpoints: 
+Every workspace comes with a few endpoints which are used to connect to from various applications: 
 
 ![Synapse workspace endpoints](images/synapse-workspace-endpoint.png)
 
@@ -125,8 +126,11 @@ Every workspace comes with a few endpoints:
 
 If we take the dedicated SQL endpoint for example, we add private endpoint, what's 
 basically happening is when you connect to it, your request goes 
-through a **DNS** (**D**omain **N**ame **S**ervice translates domain names to IP addresses 
-so browsers can load Internet resources) redirection to a private DNS.
+through a **DNS** redirection to a private DNS.
+
+<Callout>
+  <b>D</b>omain <b>N</b>ame <b>S</b>ervice translates domain names to IP addresses so browsers can load Internet resources
+</Callout>
 
 If you do a nslookup to the SQL endpoint, you can see it routes to the private endpoint:
 
@@ -154,10 +158,15 @@ Azure PaaS (**P**latform **A**s **A** **S**ervice)
 Therefore, these endpoints are required by the Synapse workspace to communicate with the 2 SQL pools; dedicated and serverless... This 
 will make more sense once you see the detailed architecture diagram.
 
+<Callout>
+
 🚨 Alert, one common issue I see people facing is their Spark pools not being able to read files on the storage account.
-This is because you need to manually create a managed service endpoint the storage account.  Check out this documentation to
+This is because you need to manually create a managed service endpoint the storage account.  
+
+Check out this documentation to
 see how: [How to create a managed private endpoint](https://docs.microsoft.com/en-us/azure/synapse-analytics/security/how-to-create-managed-private-endpoints)
 
+</Callout>
 
 ### Private Endpoint Connections
 
@@ -214,7 +223,7 @@ vNet is managed by Microsoft and cannot be seen in the Azure portal's resource l
 2. It contains the compute for the self-hosted integration runtime and the compute for 
 the Synapse Dataflow.
 
-3. Any spark pools create will create virtual machines behind the scenes. These will also
+3. Any spark pools will create virtual machines behind the scene. These will also
 be hosted inside the managed virtual network (vNet).
 
 4. The workspace studio UI is actually a web app. For clarity purpose, I've included this
@@ -229,7 +238,6 @@ vNet but will communicate back and forth via private endpoints.
 
 6. Same as the Serverless SQL pools, it will not be physically deployed in the 
 vNet but will communicate back and forth via private endpoints. 
-
 <Callout>
   💡 Remember the two managed private endpoints created when you deployed your new Synapse
 workspace? This is why they're created.
@@ -264,6 +272,8 @@ created in the customer's vNet for the following:
 1. Dedicated SQL Pool
 2. Serverless SQL Pool
 3. Dev
+
+Like you can see here:
 
 ![Private Endpoints created in the portal](images/portal-created-endpoints.png)
 
