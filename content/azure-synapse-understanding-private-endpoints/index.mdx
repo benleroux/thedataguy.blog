@@ -21,15 +21,15 @@ One of the most asked questions or subjects that are top of mind revolves around
 need to be in place to meet security requirements and the first thing that comes 
 up is: does my data flow through the internet? 
 
-In comes private endpoints, virtual networks, private and public IPs. 🤦‍♂️ Things 
+When it comes down to private endpoints, virtual networks, private and public IPs. 🤦‍♂️ Things 
 start getting complex...
 
 So let’s try to make sense of all this.
 
 <Callout>
   💡 Note, I will not be doing a deep dive into networking as there are people 
-  that are more knowledgeable on this subject. But, will try to clarify to the best
-  of my abilities 🖖🏻
+  that are more knowledgeable on this subject. But, I will try to clarify to the best
+  of my abilities 🖖🏻 (live long and prosper).
 </Callout>
 
 ## Network security
@@ -46,14 +46,17 @@ This topic can be broken down in a few categories:
 
 ## Firewall
 
-~~Google~~ Bing defines firewall as _"... a security device that monitors 
+Bing defines firewall as _"... a security device that monitors 
 and filters incoming and outgoing network traffic based on an organization's 
 previously established security policies. ... A firewall's main purpose is to 
 allow non-threatening traffic in and to keep dangerous traffic out."_
 
 In the context of Azure Synapse, it will allow you to grant or deny access to 
-your Synapse workspace based on IP addressed. This can be effectively used to 
-block  traffic to your workspace via the internet.
+your Synapse workspace based on IP addresses. This can be effectively used to 
+block traffic to your workspace via the internet. Normally, firewalls would control both
+outbound and inbound traffic, but in this case, it's inbound only.
+
+I'll cover outbound later when talking about managed virtual network and data exfiltration.
 
 When creating your workspace, you have the option to allow **ALL** IP address through.
 
@@ -64,14 +67,14 @@ If you enable this option, you'll end up with the following rule added:
 
 <Callout>
   💡 Note, if you don't enable this, you will <b>NOT</b> be able to connect to your 
-  workspace right away. Best to keep it enabled, then go back and modify / tweek  it.
+  workspace right away. Best to keep it enabled, then go back and modify / tweak  it.
 </Callout>
 
 See this documentation from Microsoft on [Synapse workspace IP Firewall rules](https://docs.microsoft.com/en-us/azure/synapse-analytics/security/synapse-workspace-ip-firewall)
 
 ## Virtual Network
 
-Virtual network will give you network isolation with other workspaces. This is 
+Virtual network will give you network isolation against other workspaces. This is 
 accomplished by enabling the **"Enable managed virtual network"** option during 
 the deployment of the workspace.
 
@@ -92,13 +95,15 @@ Another benefit of enabling managed virtual network and private endpoints, which
 we're tackling next, is that you're now protected against data exfiltration.
 
 <Callout>
-  ≝ Definition: Data Exfiltration guards against malicious insiders accessing 
-  your Azure resources and exfiltrating sensitive data to locations outside of 
-  your organization’s scope. 
+  ≝ Definition: occurs when malware and/or a malicious actor carries out an unauthorized data transfer from a computer. 
+  It is also commonly called data extrusion or data exportation.   
 </Callout>
 
+In the context of Azure, protection agains data exfiltration guards against malicious insiders accessing 
+your Azure resources and exfiltrating sensitive data to locations outside of your organization’s scope.
+
 In addition to enabling the managed virtual network option, you can also specify
-which Azure AD tenant can connect to your workspace endpoints.
+which Azure Active Directory tenant your workspace can communicate with.
 
 ![Specify AD Tenant](images/data-exfiltration.png)
 
@@ -110,10 +115,9 @@ Microsoft defines [Private Endpoints](https://docs.microsoft.com/en-us/azure/pri
 interface that connects you privately and securely to a service powered by Azure Private Link. Private Endpoint uses a private IP address from your VNet, 
 effectively bringing the service into your VNet."_
 
-In short, you can use a private IP to connect to a public service... Well, kind of as you still need to
-use a DNS, but more on that later.
+In short, you can access a public service using a private endpoint.
 
-Every workspace comes with a few endpoints which are used to connect to from various applications: 
+Every Synapse workspace comes with a few endpoints which are used to connect to from various applications: 
 
 ![Synapse workspace endpoints](images/synapse-workspace-endpoint.png)
 
@@ -121,16 +125,12 @@ Every workspace comes with a few endpoints which are used to connect to from var
 | ----------------------- | ------------------------------------------------------------------------------------------------------- |
 | Dedicated SQL endpoint  | Used to connect to the _**Dedicated**_ SQL Pool from external applications like Power BI, SSMS          |
 | Serverless SQL endpoint | Used to connect to the _**Serverless**_ SQL Pool from external applications like Power BI, SSMS         |
-| Development endpoint    | This is used by the workspace web UI as well as DevOps to publish artifacts like SQL scripts, notebook. |
+| Development endpoint    | This is used by the workspace web UI as well as DevOps to execute and publish artifacts like SQL scripts, notebook. |
 | workspace web URL       | Used to connect to the Synapse Studio web UI                                                            |
 
-If we take the dedicated SQL endpoint for example, we add private endpoint, what's 
+If we take the dedicated SQL endpoint for example and we add private endpoint. What's 
 basically happening is when you connect to it, your request goes 
-through a **DNS** redirection to a private DNS.
-
-<Callout>
-  <b>D</b>omain <b>N</b>ame <b>S</b>ervice translates domain names to IP addresses so browsers can load Internet resources
-</Callout>
+through a redirection to a private IP.
 
 If you do a nslookup to the SQL endpoint, you can see it routes to the private endpoint:
 
@@ -141,6 +141,16 @@ nslookup synapseblog-ws.sql.azuresynapse.net
 ![Traceroute Output](images/traceroute-output.png)
 
 ### Managed Private Endpoints
+
+Synapse uses a managed VNET / Subnet (i.e. not a customer’s one) and exposes private endpoints in customers’ vnets as needed. This is the reason you never pick a VNET in the wizard during the creation. 
+
+Since that VNET belongs to Microsoft and is managed, it is isolated by itself.  It therefore requires private endpoints from other PaaS to be created into it.
+
+<Callout>
+  It is similar to how the managed VNET feature of Azure Data Factory operates.
+</Callout>
+
+I have a diagram outlining all this later.
 
 When you create a new Synapse workspace, you'll notice in the Synapse Studio, under the manage hub, security section and 
 managed private endpoint that 2 private endpoints were created by default.
@@ -155,7 +165,7 @@ managed private endpoint that 2 private endpoints were created by default.
 When you deploy a Synapse workspace in a managed virtual network, you need to tell Synapse how to communicate with other
 Azure PaaS (**P**latform **A**s **A** **S**ervice)
 
-Therefore, these endpoints are required by the Synapse workspace to communicate with the 2 SQL pools; dedicated and serverless... This 
+Therefore, these endpoints are required by Synapse's orchastration (the studio UI, Synpase Pipeline, etc.) to communicate with the 2 SQL pools; dedicated and serverless... This 
 will make more sense once you see the detailed architecture diagram.
 
 <Callout>
@@ -189,7 +199,7 @@ You will need to create a private endpoint for the following:
 
 ### Private Link Hub
 
-You might've noticed in the list of private endpoint, we only had 3 of them while your workspace has 4 of them.
+You might've noticed in the list of private endpoint, we only had 3 of them while your workspace has 4 endpoints.
 That's because the studio workspace web URL will need a Private Link Hub to setup the secured connection.
 
 Check out this document for instructions on how to set this up.
