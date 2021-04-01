@@ -236,43 +236,73 @@ the Synapse Dataflow.
 3. Any spark pools will create virtual machines behind the scene. These will also
 be hosted inside the managed virtual network (vNet).
 
-4. The workspace studio UI is actually a web app. For clarity purpose, I've included this
-as part of the Synapse workspace perimeter but it actually resides outside. The  following
-diagram shows this:
-![Actual Synapse Workspace architecture](images/synapse-workspace-actual.png)
-<Callout>
-  💡 Note, the web app for the UI will not be visible and is managed by Microsoft
-</Callout>
-5. The Serverless SQL pool will not be physically deployed in the 
-vNet but will communicate back and forth via private endpoints. 
+4. The Serverless SQL pool is a multi-tenant service and will not be physically deployed in the 
+vNet but you can communicate with the service via private endpoints. 
 
-6. Same as the Serverless SQL pools, it will not be physically deployed in the 
-vNet but will communicate back and forth via private endpoints. 
+5. Same as the Serverless SQL pools, it's a multi-tenant service and will not be physically deployed in the 
+vNet but will communicate with the service via private endpoints. 
 <Callout>
   💡 Remember the two managed private endpoints created when you deployed your new Synapse
 workspace? This is why they're created.
+</Callout>
+
+### Synapse Studio
+
+![Actual Synapse Workspace architecture](images/synapse-workspace-actual.png)
+
+1. The workspace studio UI is a single page application (SPA) and is created as part of the
+Synapse workspace deployment.
+
+2. Utilizing an [Azure Synpase Link Hub](#private-link-hub), you're able to create a private endpoint into the customer's owned vNet.
+
+3. Users can connect to the Studio UI using this private endpoint.
+
+4. Executions like notebooks or SQL scripts made from the Studio web interface will submit commands via the DEV private endpoint 
+and ran on the appropriate pool.
+
+<Callout>
+  💡 Note, the web app for the UI will not be visible and is managed by Microsoft
 </Callout>
 
 ### Storage Accounts and Synapse
 
 ![Storage Accounts Private Endpoints](images/storage-account-pe.png)
 
-1. When you create a storage account that limits access to certain vNets, endpoints
-are needed to allow the connection and authentication.
+1. For each workspace created, you will need to specify a storage account / file system with hierarchical name space 
+enabled in order for Synapse to store its metadata. 
 
-3. Similar to how Synapse needs private endpoints to communicate with the 
+2. When your storage account is configured to limit access to certain vNets, endpoints
+are needed to allow the connection and authentication. Similar to how Synapse needs private endpoints to communicate with the 
 storage account, any external systems or people that need to read or write
 to the storage account will require a [private endpoint](#private-endpoint-connections).
 
 3. Every storage accounts that you connect to your Synapse workspace via linked services will
-need a [managed private endpoint](#managed-private-endpoints) like we mentioned previously.
+need a [managed private endpoint](#managed-private-endpoints) like we mentioned previously. This applies 
+to each service within the managed vNet.  
 
 4. Optional: You can use another storage account to store any logs or audits.
-
 <Callout>
   💡 Note, logs and audits cannot use storage accounts with hierarchical namespace
   enabled. Hence the reason why we have 2 storage accounts in the diagram.
 </Callout>
+
+5. The SQL pools, which are multi-tenant services, talk to the Storage over public IPs but use trusted 
+service based isolation. However, going over public IPs doesn't mean data is going to the internet. 
+Azure networking implements cold potato routing, so traffic stays on Azure backbone as long as the two 
+entities communicating are on Azure. 
+This can be configured within the storage account networking configuration.
+![Storage Account Trusted MSI](images/storage-trusted-msi.png)
+Or can also be set during the Synpase workspace creation.
+![Storage Account Trusted MSI](images/synapse-creation-msi.png)
+<Callout>
+  ≝ Definition: In commercial network routing between autonomous systems which are interconnected in 
+  multiple locations, hot-potato routing is the practice of passing traffic off to another autonomous 
+  system as quickly as possible, thus using their network for wide-area transit. Cold-potato routing is 
+  the opposite, where the originating autonomous system holds onto the packet until it is as near to the 
+  destination as possible.
+</Callout>
+
+
 
 ### Private endpoints in customer-owned vNet
 
