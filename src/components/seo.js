@@ -40,12 +40,13 @@ function SEO({ description, lang, meta, title, blog, ogImage, ogUrl }) {
     `
   )
 
-  const { defaultTitle, defaultDescription, siteUrl } = site.siteMetadata
+  const { defaultTitle, defaultDescription, siteUrl, author } = site.siteMetadata
 
   const seo = {
     title: title || defaultTitle,
     titleTemplate: title ? `%s | ${defaultTitle}` : `Blog | ${defaultTitle}`,
     description: description || defaultDescription,
+    author: `${author}`,
     image: `${siteUrl}${
       blog
         ? ogImage || blogImage.childImageSharp.fixed.src
@@ -94,6 +95,10 @@ function SEO({ description, lang, meta, title, blog, ogImage, ogUrl }) {
           property: `og:type`,
           content: `article`,
         },
+        {
+          property: `og:author`,
+          content: seo.author,
+        },        
       ].concat(meta)}
     >
       <script type="application/ld+json">
