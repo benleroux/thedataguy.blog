@@ -96,7 +96,7 @@ function SEO({ description, lang, meta, title, blog, ogImage, ogUrl }) {
           content: `article`,
         },
         {
-          property: `og:author`,
+          property: `author`,
           content: seo.author,
         },        
       ].concat(meta)}
