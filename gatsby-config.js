@@ -201,7 +201,6 @@ module.exports = {
                 ) {
                   edges {
                     node {
-                      html
                       fields { 
                         slug
                       }
